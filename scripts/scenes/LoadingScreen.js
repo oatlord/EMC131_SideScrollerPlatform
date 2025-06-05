@@ -1,4 +1,5 @@
 let cursors;
+let jumpHeight = -190;
 
 class LoadingScreen extends Phaser.Scene {
     constructor() {
@@ -6,8 +7,18 @@ class LoadingScreen extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("worldTileset","assets/sprites/tiles/world_tileset.png");
-
+        this.load.spritesheet("worldTileset","assets/sprites/tiles/worldTileset.png",{
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.spritesheet("coinSprite", "assets/sprites/collectibles/coin.png",{
+            frameWidth: 16,
+            frameHeight: 16
+        });
+        this.load.spritesheet('fruitSprite', 'assets/sprites/collectibles/fruit.png',{
+            frameWidth: 16,
+            frameHeight: 16
+        });
         this.load.spritesheet("player","assets/sprites/player/hoodedGuy.png",
             {frameWidth: 32, frameHeight: 32}
         );
@@ -26,3 +37,20 @@ class LoadingScreen extends Phaser.Scene {
         
     }
 } 
+
+function collectCoin(player, coin) {
+    coin.disableBody(true, true);
+    console.log("Coined");
+}
+
+function switchScene(player, finish) {
+    let interactKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    if (interactKey.isDown) {
+        this.scene.start("Level2");
+    }
+}
+
+function collectFruit(player, fruit) {
+    fruit.disableBody(true, true);
+    jumpHeight = -280;
+}

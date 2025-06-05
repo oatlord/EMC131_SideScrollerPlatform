@@ -1,14 +1,15 @@
 const config = {
     type: Phaser.AUTO,
-    width: 900,
-    height: 600,
+    width: 800,
+    height: 400,
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: {y: 700},
+            gravity: {y: 400},
             debug: true
         }
     },
+    pixelArt: true,
     scene: [LoadingScreen, Level1, Level2, Level3]
 };
 
