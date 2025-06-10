@@ -43,6 +43,14 @@ class Level1 extends Phaser.Scene {
             finish.body.setAllowGravity(false);
         })
 
+        const enemyLayer = map.getObjectLayer('Enemies');
+        let enemies = this.physics.add.group();
+        enemyLayer.objects.forEach(object => {
+            let enemy = enemies.create(object.x + 8, object.y - 8, 'enemySprite').setFrame(0);
+            enemy.body.setAllowGravity(false);
+        })
+
+        this.physics.world.setBounds(0,0,config.width, config.height, true, true, true, false);
         this.player = this.physics.add.sprite(80, 300, "player").setFrame(1).setScale(0.95);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
@@ -54,9 +62,11 @@ class Level1 extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+        this.attackKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         this.physics.add.collider(this.player, groundPlatforms);
         this.physics.add.collider(this.player, bridgePlatform);
+        this.physics.add.collider(this.player, enemies, enemyDamage, null, this);
         this.physics.add.overlap(this.player, coins, collectCoin, null, this);
         this.physics.add.overlap(this.player, fruits, collectFruit, null, this);
         this.physics.add.overlap(this.player, finish, switchSceneTo2, null, this);
@@ -92,16 +102,38 @@ class Level1 extends Phaser.Scene {
             )
         })
 
-        this.anims.create({
-            key: 'jump',
-            frames: this.anims.generateFrameNumbers('player',
-                {
-                    start: 32,
-                    end: 37
-                }
-            ),
-            frameRate: 5
-        })
+        // this.anims.create({
+        //     key: 'jump',
+        //     frames: this.anims.generateFrameNumbers('player',
+        //         {
+        //             start: 32,
+        //             end: 37
+        //         }
+        //     ),
+        //     frameRate: 5
+        // })
+
+        // this.anims.create({
+        //     key: 'attack',
+        //     frames: this.anims.generateFrameNumbers('player',
+        //         {
+        //             start: 65,
+        //             end: 71
+        //         }
+        //     ),
+        //     frameRate: 10
+        // })
+
+        // this.anims.create({
+        //     key: 'death',
+        //     frames: this.anims.generateFrameNumbers('player',
+        //         {
+        //             start: 39,
+        //             end: 40
+        //         }
+        // ),
+        // frameRate: 10
+        // })
 
         // Events
         this.time.addEvent({

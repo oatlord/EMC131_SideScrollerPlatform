@@ -43,6 +43,15 @@ class Level2 extends Phaser.Scene {
             finish.body.setAllowGravity(false);
         })
 
+        const enemyLayer = map.getObjectLayer('Enemies');
+        let enemies = this.physics.add.group();
+        enemyLayer.objects.forEach(object => {
+            let enemy = enemies.create(object.x + 8, object.y - 8, 'enemySprite').setFrame(0);
+            enemy.body.setAllowGravity(false);
+        })
+
+        this.physics.world.setBounds(0, 0, config.width, config.height, true, true, true, false);
+
         this.player = this.physics.add.sprite(80, 300, "player").setFrame(1).setScale(0.95);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
@@ -67,6 +76,8 @@ class Level2 extends Phaser.Scene {
 
         this.physics.add.collider(this.player, groundPlatforms);
         this.physics.add.collider(this.player, bridgePlatform);
+        this.physics.add.collider(this.player, enemies, enemyDamage, null, this);
+
         this.physics.add.overlap(this.player, coins, collectCoin, null, this);
         this.physics.add.overlap(this.player, fruits, collectFruit, null, this);
         this.physics.add.overlap(this.player, finish, switchSceneTo3, null, this);

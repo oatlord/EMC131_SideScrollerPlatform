@@ -18,6 +18,10 @@ class LoadingScreen extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         });
+        this.load.spritesheet('enemySprite', 'assets/mobs/slimeIdle.png',{
+            frameWidth: 16,
+            frameHeight: 16
+        });
         this.load.spritesheet("player","assets/sprites/player/hoodedGuy.png",
             {frameWidth: 32, frameHeight: 32}
         );
@@ -63,4 +67,10 @@ function collectFruit(player, fruit) {
 
 function waterDamage(player, water) {
 
+}
+
+function enemyDamage(player, enemy) {
+    enemy.disableBody(true, true);
+    player.disableBody(true, true);
+    alert("Game over!");
 }
