@@ -1,4 +1,3 @@
-let cursors;
 let jumpHeight = -190;
 
 class LoadingScreen extends Phaser.Scene {
@@ -43,14 +42,25 @@ function collectCoin(player, coin) {
     console.log("Coined");
 }
 
-function switchScene(player, finish) {
+function switchSceneTo2(player, finish) {
     let interactKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     if (interactKey.isDown) {
         this.scene.start("Level2");
     }
 }
 
+function switchSceneTo3(player, finish) {
+    let interactKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    if (interactKey.isDown) {
+        this.scene.start("Level3");
+    }
+}
+
 function collectFruit(player, fruit) {
     fruit.disableBody(true, true);
     jumpHeight = -280;
+}
+
+function waterDamage(player, water) {
+
 }

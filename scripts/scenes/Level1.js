@@ -4,7 +4,7 @@ class Level1 extends Phaser.Scene {
     }
 
     preload() {
-
+        
     }
 
     create() {
@@ -52,14 +52,14 @@ class Level1 extends Phaser.Scene {
         mainCamera.setZoom(2);
         mainCamera.startFollow(this.player);
 
-        cursors = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.createCursorKeys();
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
         this.physics.add.collider(this.player, groundPlatforms);
         this.physics.add.collider(this.player, bridgePlatform);
         this.physics.add.overlap(this.player, coins, collectCoin, null, this);
         this.physics.add.overlap(this.player, fruits, collectFruit, null, this);
-        this.physics.add.overlap(this.player, finish, switchScene, null, this);
+        this.physics.add.overlap(this.player, finish, switchSceneTo2, null, this);
 
         this.anims.create({
             key: 'walk',
@@ -114,6 +114,7 @@ class Level1 extends Phaser.Scene {
             loop: true
         });
 
+        
     }
 
 
@@ -124,11 +125,11 @@ class Level1 extends Phaser.Scene {
             moveSpeed++;
         }
 
-        if (cursors.right.isDown) {
+        if (this.cursors.right.isDown) {
             this.player.flipX = false;
             this.player.anims.play('walk', true);
             this.player.setVelocityX(moveSpeed);
-        } else if (cursors.left.isDown) {
+        } else if (this.cursors.left.isDown) {
             this.player.flipX = true;
             this.player.anims.play('walk', true);
             this.player.setVelocityX(-moveSpeed);
@@ -138,7 +139,7 @@ class Level1 extends Phaser.Scene {
             this.player.anims.play('stop');
         }
 
-        if (cursors.up.isDown && this.player.body.blocked.down) {
+        if (this.cursors.up.isDown && this.player.body.blocked.down) {
             this.player.setVelocityY(jumpHeight);
         }
     }

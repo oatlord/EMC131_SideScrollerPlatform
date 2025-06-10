@@ -11,6 +11,7 @@ const config = {
     },
     pixelArt: true,
     scene: [LoadingScreen, Level1, Level2, Level3]
+    // scene: [LoadingScreen, Level2, Level3]
 };
 
 const game = new Phaser.Game(config);
