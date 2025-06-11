@@ -43,7 +43,10 @@ class LoadingScreen extends Phaser.Scene {
 
 function collectCoin(player, coin) {
     coin.disableBody(true, true);
-    console.log("Coined");
+    // this.events.emit('addScore');
+    this.score += 10;
+    this.scoreText.setText("Score: " + this.score);
+    console.log(this.score);
 }
 
 function switchSceneTo2(player, finish) {
@@ -65,9 +68,11 @@ function collectFruit(player, fruit) {
     jumpHeight = -280;
 }
 
-function waterDamage(player, water) {
-
-}
+// function waterDamage(player, water) {
+//     player.disableBody(true, true);
+//     console.log("hello i am unda da watah");
+//     alert("Game over!");
+// }
 
 function enemyDamage(player, enemy) {
     enemy.disableBody(true, true);

@@ -4,7 +4,7 @@ class Level1 extends Phaser.Scene {
     }
 
     preload() {
-        
+        this.score = 0;
     }
 
     create() {
@@ -17,6 +17,7 @@ class Level1 extends Phaser.Scene {
         groundPlatforms.setCollisionBetween(16, 17);
 
         const water = map.createDynamicLayer("Water", tileset, 0, 0);
+
         const bgDetails = map.createDynamicLayer("Background Details", tileset, 0, 0);
 
         const bridgePlatform = map.createDynamicLayer("Bridge", tileset, 0, 0);
@@ -50,23 +51,40 @@ class Level1 extends Phaser.Scene {
             enemy.body.setAllowGravity(false);
         })
 
-        this.physics.world.setBounds(0,0,config.width, config.height, true, true, true, false);
+        this.physics.world.setBounds(0, 0, config.width, config.height, true, true, true, false);
         this.player = this.physics.add.sprite(80, 300, "player").setFrame(1).setScale(0.95);
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
 
+        // Main Camera Zoom
         let mainCamera = this.cameras.main;
         mainCamera.setBounds(0, 0, config.width, config.height);
         mainCamera.setZoom(2);
         mainCamera.startFollow(this.player);
 
+        // Score Rendering
+        this.scoreText = this.add.text(10, 10, "Score: " + this.score, {
+            font: '20px Arial',
+            fill: '#ffffff'
+        });
+
+        this.uiCamera = this.cameras.add(0, 0, config.width, config.height);
+        this.uiCamera.setScroll(0, 0);
+
+        mainCamera.ignore(this.scoreText);
+        this.uiCamera.ignore(this.children.list.filter(obj => obj !== this.scoreText));
+
+        // Cursors and Keys
         this.cursors = this.input.keyboard.createCursorKeys();
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        this.attackKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
+        // Colliders
         this.physics.add.collider(this.player, groundPlatforms);
         this.physics.add.collider(this.player, bridgePlatform);
+        // this.physics.add.collider(this.player, water);
+        
         this.physics.add.collider(this.player, enemies, enemyDamage, null, this);
+        // this.physics.add.overlap(this.player, water, waterDamage, null, this);
         this.physics.add.overlap(this.player, coins, collectCoin, null, this);
         this.physics.add.overlap(this.player, fruits, collectFruit, null, this);
         this.physics.add.overlap(this.player, finish, switchSceneTo2, null, this);
@@ -102,39 +120,6 @@ class Level1 extends Phaser.Scene {
             )
         })
 
-        // this.anims.create({
-        //     key: 'jump',
-        //     frames: this.anims.generateFrameNumbers('player',
-        //         {
-        //             start: 32,
-        //             end: 37
-        //         }
-        //     ),
-        //     frameRate: 5
-        // })
-
-        // this.anims.create({
-        //     key: 'attack',
-        //     frames: this.anims.generateFrameNumbers('player',
-        //         {
-        //             start: 65,
-        //             end: 71
-        //         }
-        //     ),
-        //     frameRate: 10
-        // })
-
-        // this.anims.create({
-        //     key: 'death',
-        //     frames: this.anims.generateFrameNumbers('player',
-        //         {
-        //             start: 39,
-        //             end: 40
-        //         }
-        // ),
-        // frameRate: 10
-        // })
-
         // Events
         this.time.addEvent({
             delay: 30, // milliseconds
@@ -145,8 +130,6 @@ class Level1 extends Phaser.Scene {
             },
             loop: true
         });
-
-        
     }
 
 
@@ -174,5 +157,9 @@ class Level1 extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.blocked.down) {
             this.player.setVelocityY(jumpHeight);
         }
+
+//         let tile = this.water.getTileAtWorldXY(this.player.x, this.player.y);
+// console.log("Tile at player:", tile);
+
     }
 }

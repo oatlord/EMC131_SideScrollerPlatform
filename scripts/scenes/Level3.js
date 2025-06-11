@@ -4,7 +4,7 @@ class Level3 extends Phaser.Scene {
     }
 
     preload() {
-
+        this.score = 0;
     }
 
     create() {
@@ -56,6 +56,17 @@ class Level3 extends Phaser.Scene {
         mainCamera.setBounds(0, 0, config.width, config.height);
         mainCamera.setZoom(2);
         mainCamera.startFollow(this.player);
+
+        this.scoreText = this.add.text(10, 10, "Score: " + this.score, {
+            font: '20px Arial',
+            fill: '#ffffff'
+        });
+
+        this.uiCamera = this.cameras.add(0, 0, config.width, config.height);
+        this.uiCamera.setScroll(0, 0);
+
+        mainCamera.ignore(this.scoreText);
+        this.uiCamera.ignore(this.children.list.filter(obj => obj !== this.scoreText));
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
